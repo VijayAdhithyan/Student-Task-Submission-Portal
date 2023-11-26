@@ -1,8 +1,27 @@
 import Logo from "../../assets/Logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import setCurrentUser from "../../actions/currentUser";
+import { useDispatch, useSelector } from "react-redux";
 import "./NavBar.css";
+import { useEffect } from "react";
 
-const navBar = () => {
+const NavBar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.currentUserReducer);
+
+  console.log(user?.result.role);
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    navigate("/");
+    dispatch(setCurrentUser(null));
+  };
+
+  useEffect(() => {
+    dispatch(setCurrentUser(JSON.parse(localStorage.getItem("Profile"))));
+  }, [dispatch]);
+
   return (
     <div className="nav-session">
       <div className="logo-session">
@@ -12,28 +31,50 @@ const navBar = () => {
           <p>Submission Portal</p>
         </div>
       </div>
-      <ul className="nav-links">
-          <Link to="/" className="nav-link">
-            Home
-          </Link>
-          <Link to="/about" className="nav-link">
-            About
-          </Link>
-          <Link to="/auth/login/student" className="nav-link">
-            Student Login
-          </Link>
-          <Link to="/auth/login/staff" className="nav-link">
-            Staff Login
-          </Link>
-      </ul>
+      <div className="nav-links">
+        <Link to="/" className="nav-link">
+          <p>Home</p>
+        </Link>
+        <Link to="/about" className="nav-link">
+          <p>About</p>
+        </Link>
+        {user === null ? (
+          <>
+            <Link to="/auth/login/student" className="nav-link">
+              <p>Student Login</p>
+            </Link>
+            <Link to="/auth/login/staff" className="nav-link">
+              <p>Staff Login</p>
+            </Link>
+          </>
+        ) : (
+          <>
+            {user?.result.role === "staff" ? (
+              <>
+                <Link to="/dashboard/staff" className="nav-link">
+                  <p>Dashboard</p>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/dashboard/student" className="nav-link">
+                  <p>Dashboard</p>
+                </Link>
+              </>
+            )}
+            <Link to="/" className="nav-link" onClick={handleLogout}>
+              <p>Logout</p>
+            </Link>
+          </>
+        )}
+      </div>
       <div className="nav-btn">
         <Link to="/contact" className="nav-link">
           Contact us
         </Link>
-        {/* <p></p> */}
       </div>
     </div>
   );
 };
 
-export default navBar;
+export default NavBar;

@@ -28,7 +28,7 @@ export const studentLogin = (authData, navigate) => async (dispatch) => {
     const { data } = await api.studentLogin(authData);
     dispatch({ type: "AUTH", data });
     dispatch(setCurrentUser(JSON.parse(localStorage.getItem("Profile"))));
-    navigate("/student/page");
+    navigate("/");
   } catch (error) {
     console.log(error);
   }

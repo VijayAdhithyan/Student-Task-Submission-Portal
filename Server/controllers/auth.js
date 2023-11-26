@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 import staff from "../models/staffAuth.js";
-import student from '../models/studentAuth.js'
+import student from "../models/studentAuth.js";
 
 export const staffSignup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -14,7 +14,12 @@ export const staffSignup = async (req, res) => {
     }
 
     const hashpassword = await bcrypt.hash(password, 12);
-    const newUser = await staff.create({ name, email, password: hashpassword,role:"staff" });
+    const newUser = await staff.create({
+      name,
+      email,
+      password: hashpassword,
+      role: "staff",
+    });
     const token = jwt.sign(
       { email: newUser.email, id: newUser._id },
       process.env.JWT_SECRET,

@@ -4,7 +4,8 @@ import StudentLogin from "./pages/loginPage/StudentLogin";
 import StaffLogin from "./pages/loginPage/StaffLogin";
 import StudentSignupPage from "./pages/signupPage/StudentSignupPage";
 import StaffSignupPage from "./pages/signupPage/StaffSignupPage";
-import StudentPage from "./pages/students/StudentPage";
+import StaffDash from "./pages/dashboard/StaffDash";
+import StudentDash from "./pages/dashboard/StudentDash";
 
 const AllRoutes = () => {
   return (
@@ -14,7 +15,8 @@ const AllRoutes = () => {
       <Route path="/auth/login/staff" element={<StaffLogin />} />
       <Route path="/auth/signup/student" element={<StudentSignupPage />} />
       <Route path="/auth/signup/staff" element={<StaffSignupPage />} />
-      <Route path="/student/page" element={<StudentPage />} />
+      <Route path="/dashboard/staff" element={<StaffDash />} />
+      <Route path="/dashboard/student" element={<StudentDash />} />
     </Routes>
   );
 };
